@@ -76,7 +76,9 @@
 
 - name: "Configure SELinux when enabled"
   ansible.builtin.include_tasks: selinux.yml
-  when: ansible_facts.selinux.status | default('disabled') == 'enabled'
+  when:
+    - ansible_facts.selinux.status | default('disabled') == 'enabled'
+    - zabbix_manage_selinux | default(true) | bool
 
 - name: "Configure zabbix-agent"
   ansible.builtin.template:
